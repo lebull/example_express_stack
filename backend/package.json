@@ -2,13 +2,20 @@
   "scripts": {
     "start": "ts-node src/index.ts",
     "build": "tsc",
-    "serve": "node dist/index.js"
+    "serve": "node dist/index.js",
+    "ci-build": "npx tsc"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/node": "^20.11.30",
     "express": "^4.19.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.3"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.538.0",
+    "cors": "^2.8.5",
+    "express-async-handler": "^1.2.0"
   }
 }
