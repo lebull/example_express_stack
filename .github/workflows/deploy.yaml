@@ -44,10 +44,6 @@ jobs:
         working-directory: ./infrastructure
         run: >
           terraform init 
-          -backend-config="bucket=terraform-${{env.PROJECT_NAME}}-${{env.AWS_REGION}}" 
-          -backend-config="region=${{env.AWS_REGION}}" 
-          -backend-config="dynamodb_table=terraform-${{env.PROJECT_NAME}}-${{env.AWS_REGION}}" 
-          -backend-config="key=cvi-admin-tools/default/${{env.ENVIRONMENT_NAME}}/common/admin-tools.tfstate"
 
       # - name: Apply Terraform
       #   working-directory: ./infrastructure
