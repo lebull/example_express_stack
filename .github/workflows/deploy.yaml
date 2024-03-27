@@ -49,6 +49,18 @@ jobs:
           -backend-config="dynamodb_table=terraform-${{env.PROJECT_NAME}}-${{env.AWS_REGION}}" 
           -backend-config="key=${{env.PROJECT_NAME}}/default/${{env.ENVIRONMENT_NAME}}/common/admin-tools.tfstate"
 
+      - name: Plan Terraform
+        working-directory: ./infrastructure
+        run: |
+          terraform plan \
+            -lock-timeout=30m \
+            -var "project_name"="${{env.PROJECT_NAME}}"
+            -var "environment=${{env.ENVIRONMENT_NAME}}" \
+            -var "aws_account=${{env.AWS_ACCOUNT}}" \
+            -var "region=${{env.AWS_REGION}}" \
+          echo s3_bucket_cloudfront_distribution_id=$(terraform output -raw s3_bucket_cloudfront_distribution_id) >> $GITHUB_ENV
+        
+
       - name: Apply Terraform
         working-directory: ./infrastructure
         run: |
