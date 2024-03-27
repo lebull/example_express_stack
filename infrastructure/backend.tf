@@ -5,11 +5,13 @@ locals {
 
 terraform {
   backend "s3" {
-    encrypt = true
-    bucket = local.s3_bucket
-    dynamodb_table = local.dynamo_table
-    key    = "terraform.tfstate"
-    region = var.region
+    # These are plugged in through our GitHub Actions
+
+    # encrypt = true
+    # bucket = local.s3_bucket
+    # dynamodb_table = local.dynamo_table
+    # key    = "terraform.tfstate"
+    # region = var.region
   }
 }
 
