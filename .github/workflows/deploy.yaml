@@ -7,14 +7,27 @@ on:
 
 env:
   PROJECT_NAME: express-auth-example
+  ENVIRONMENT_NAME: demo
   AWS_REGION: us-east-2 # Friends don't let friends deploy to us-east-1
-  ENVIRONMENT_NAME: demo # Friends don't let friends deploy to us-east-1
+  AWS_ACCOUNT: "917558688231"
 
 jobs:
   deploy:
     name: "Build and Deploy"
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v2
+        with:
+              fetch-depth: 0
+     
+      - name: Setup Terraform CLI
+        uses: hashicorp/setup-terraform@v2
+        with:
+              terraform_version: 1.2.8
+              terraform_wrapper: false
+
       - name: Setup AWS Credientials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -26,6 +39,7 @@ jobs:
           role-external-id: ${{ secrets.AWS_ROLE_EXTERNAL_ID }}
           role-duration-seconds: 1200
           role-session-name: "Deploy ${{ env.PROJECT_NAME }}: ${{ env.ENVIRONMENT_NAME }}"
+
       - name: Init Terraform
         working-directory: ./infrastructure
         run: >
@@ -34,6 +48,17 @@ jobs:
           -backend-config="region=${{env.AWS_REGION}}" 
           -backend-config="dynamodb_table=terraform-${{env.PROJECT_NAME}}-${{env.AWS_REGION}}" 
           -backend-config="key=cvi-admin-tools/default/${{env.ENVIRONMENT_NAME}}/common/admin-tools.tfstate"
-          -environment="prod"
-          -project_name="express-auth-example"
-          
+
+      # - name: Apply Terraform
+      #   working-directory: ./infrastructure
+      #   run: |
+      #     terraform apply \
+      #       -lock-timeout=30m \
+      #       -var-file="${{env.AWS_ACCOUNT}}.tfvars" \
+      #       -var "username=root" \
+      #       -var "project_name"="${{env.PROJECT_NAME}}"
+      #       -var "environment=${{env.ENVIRONMENT_NAME}}" \
+      #       -var "aws_account=${{env.AWS_ACCOUNT}}" \
+      #       -var "region=${{env.AWS_REGION}}" \
+      #     echo s3_bucket_cloudfront_distribution_id=$(terraform output -raw s3_bucket_cloudfront_distribution_id) >> $GITHUB_ENV
+        
