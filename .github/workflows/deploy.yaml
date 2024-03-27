@@ -58,5 +58,6 @@ jobs:
             -var "environment=${{env.ENVIRONMENT_NAME}}" \
             -var "aws_account=${{env.AWS_ACCOUNT}}" \
             -var "region=${{env.AWS_REGION}}" \
+            -auto-approve
           echo s3_bucket_cloudfront_distribution_id=$(terraform output -raw s3_bucket_cloudfront_distribution_id) >> $GITHUB_ENV
         
