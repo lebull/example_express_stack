@@ -56,7 +56,6 @@ jobs:
             -lock-timeout=30m \
             -var "project_name=${{env.PROJECT_NAME}}" \
             -var "environment=${{env.ENVIRONMENT_NAME}}" \
-            -var "aws_account=${{env.AWS_ACCOUNT}}" \
             -var "region=${{env.AWS_REGION}}" \
             -auto-approve
         
