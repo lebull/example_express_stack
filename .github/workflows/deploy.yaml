@@ -1,0 +1,39 @@
+name: Deploy Infrastructure
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  PROJECT_NAME: express-auth-example
+  AWS_REGION: us-east-2 # Friends don't let friends deploy to us-east-1
+  ENVIRONMENT_NAME: demo # Friends don't let friends deploy to us-east-1
+
+jobs:
+  deploy:
+    name: "Build and Deploy"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup AWS Credientials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-skip-session-tagging: true
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{env.AWS_REGION}}
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-external-id: ${{ secrets.AWS_ROLE_EXTERNAL_ID }}
+          role-duration-seconds: 1200
+          role-session-name: MySessionName
+      - name: Init Terraform
+        working-directory: ./infrastructure
+        run: >
+          terraform init 
+          -backend-config="bucket=terraform-${{env.PROJECT_NAME}}-${{env.AWS_REGION}}" 
+          -backend-config="region=${{env.AWS_REGION}}" 
+          -backend-config="dynamodb_table=terraform-${{env.PROJECT_NAME}}-${{env.AWS_REGION}}" 
+          -backend-config="key=cvi-admin-tools/default/${{env.ENVIRONMENT_NAME}}/common/admin-tools.tfstate"
+          -environment="prod"
+          -project_name="express-auth-example"
+          

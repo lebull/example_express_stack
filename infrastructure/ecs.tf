@@ -1,10 +1,10 @@
 
 resource "aws_ecr_repository" "app_ecr_repo" {
-  name = "express-auth-example-repo"
+  name = "${var.project_name}-repo"
 }
 
 resource "aws_ecs_cluster" "my_cluster" {
-  name = "express-auth-example-${local.featureEnvironment}" # Name your cluster here
+  name = "${var.project_name}-${var.environment}" # Name your cluster here
 }
 
 resource "aws_ecs_task_definition" "app_task" {

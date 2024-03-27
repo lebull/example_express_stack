@@ -15,4 +15,10 @@ locals {
 
 provider "aws" {
   region  = "us-east-2" #The region where the environment 
+  default_tags {
+        tags = {
+          Environment     = var.project_name
+          Service         = var.environment
+        }
+      }
 }
