@@ -54,8 +54,6 @@ jobs:
         run: |
           terraform apply \
             -lock-timeout=30m \
-            -var-file="${{env.AWS_ACCOUNT}}.tfvars" \
-            -var "username=root" \
             -var "project_name"="${{env.PROJECT_NAME}}"
             -var "environment=${{env.ENVIRONMENT_NAME}}" \
             -var "aws_account=${{env.AWS_ACCOUNT}}" \
