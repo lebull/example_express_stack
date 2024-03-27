@@ -3,7 +3,7 @@ name: Deploy Infrastructure
 on:
   push:
     branches:
-      - master
+      - main
 
 env:
   PROJECT_NAME: express-auth-example
@@ -25,7 +25,7 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           role-external-id: ${{ secrets.AWS_ROLE_EXTERNAL_ID }}
           role-duration-seconds: 1200
-          role-session-name: MySessionName
+          role-session-name: "Deploy ${{ env.PROJECT_NAME }}: ${{ env.ENVIRONMENT_NAME }}"
       - name: Init Terraform
         working-directory: ./infrastructure
         run: >
