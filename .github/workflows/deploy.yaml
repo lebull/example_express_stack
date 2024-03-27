@@ -47,14 +47,14 @@ jobs:
           -backend-config="bucket=terraform-${{env.PROJECT_NAME}}-${{env.AWS_REGION}}" 
           -backend-config="region=${{env.AWS_REGION}}" 
           -backend-config="dynamodb_table=terraform-${{env.PROJECT_NAME}}-${{env.AWS_REGION}}" 
-          -backend-config="key=${{env.PROJECT_NAME}}/default/${{env.ENVIRONMENT_NAME}}/common/admin-tools.tfstate"
+          -backend-config="key=${{env.PROJECT_NAME}}.tfstate"
 
       - name: Plan Terraform
         working-directory: ./infrastructure
         run: |
           terraform plan \
             -lock-timeout=30m \
-            -var "project_name"="${{env.PROJECT_NAME}}"
+            -var "project_name=${{env.PROJECT_NAME}}"
             -var "environment=${{env.ENVIRONMENT_NAME}}" \
             -var "aws_account=${{env.AWS_ACCOUNT}}" \
             -var "region=${{env.AWS_REGION}}" \
