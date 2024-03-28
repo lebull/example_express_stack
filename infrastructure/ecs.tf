@@ -1,5 +1,5 @@
 
-resource "aws_ecr_repository" "app_ecr_repo" {
+data "aws_ecr_repository" "app_ecr_repo" {
   name = "${var.project_name}-repo"
 }
 
