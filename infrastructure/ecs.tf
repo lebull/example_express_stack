@@ -1,6 +1,6 @@
 
 data "aws_ecr_repository" "app_ecr_repo" {
-  name = "${var.project_name}-repo"
+  name = "${var.project_name}"
 }
 
 resource "aws_ecs_cluster" "my_cluster" {
@@ -13,7 +13,7 @@ resource "aws_ecs_task_definition" "app_task" {
   [
     {
       "name": "run-server",
-      "image": "${data.aws_ecr_repository.app_ecr_repo.repository_url}",
+      "image": "${var.image}",
       "essential": true,
       "portMappings": [
         {
