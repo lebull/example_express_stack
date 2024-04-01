@@ -13,7 +13,7 @@ resource "aws_ecs_task_definition" "app_task" {
   [
     {
       "name": "run-server",
-      "image": "${aws_ecr_repository.app_ecr_repo.repository_url}",
+      "image": "${data.aws_ecr_repository.app_ecr_repo.repository_url}",
       "essential": true,
       "portMappings": [
         {
