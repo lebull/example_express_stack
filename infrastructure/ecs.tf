@@ -119,7 +119,7 @@ resource "aws_lb_listener" "listener" {
 }
 
 resource "aws_ecs_service" "app_service" {
-  name            = "${var.project_name}-${var.image}"     # Name the service
+  name            = "${var.project_name}-bff"     # Name the service
   cluster         = "${aws_ecs_cluster.my_cluster.id}"   # Reference the created Cluster
   task_definition = "${aws_ecs_task_definition.app_task.arn}" # Reference the task that the service will spin up
   launch_type     = "FARGATE"
